@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gl/glew.h>
+#include <glm/glm.hpp>
 
 #include <string>
 #include <unordered_map>
@@ -27,6 +28,7 @@ public:
     void SetUniform1i(const std::string& name, GLint value);
     void SetUniform1f(const std::string& name, GLfloat value);
     void SetUniform4f(const std::string& name, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+    void SetUniformMat4f(const std::string& name, glm::mat4& value);
 private:
     ShaderSource ParseShader(const std::string& filepath);
     GLuint CreateShader(const std::string& vertexShader, const std::string& fragmentShader);

@@ -1,5 +1,7 @@
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -26,7 +28,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(500, 500, "Hello World!", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Hello World!", NULL, NULL);
 
     if (!window)
     {
@@ -77,9 +79,12 @@ int main()
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
+        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
         Texture texture{ "opengl-logo.png" };
         texture.Bind();
         shader.SetUniform1i("u_Texture", 0);
+        shader.SetUniformMat4f("u_MVP", proj);
 
         vao.Unbind();
         vbo.Unbind();

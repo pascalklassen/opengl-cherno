@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include <gl/glew.h>
+#include <glm/glm.hpp>
 
 #include <string>
 #include <iostream>
@@ -44,6 +45,11 @@ void Shader::SetUniform1f(const std::string& name, GLfloat value)
 void Shader::SetUniform4f(const std::string& name, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
 {
     GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+}
+
+void Shader::SetUniformMat4f(const std::string& name, glm::mat4& value)
+{
+    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]));
 }
 
 ShaderSource Shader::ParseShader(const std::string& filepath)
