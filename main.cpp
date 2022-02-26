@@ -28,7 +28,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(640, 480, "Hello World!", NULL, NULL);
+    window = glfwCreateWindow(960, 540, "Hello World!", NULL, NULL);
 
     if (!window)
     {
@@ -50,10 +50,10 @@ int main()
 
     {
         GLfloat vertices[] = {
-            -0.5f, -0.5f, 0.0f, 0.0f,
-             0.5f, -0.5f, 1.0f, 0.0f,
-             0.5f,  0.5f, 1.0f, 1.0f,
-            -0.5f,  0.5f, 0.0f, 1.0f
+            100.0f, 100.0f, 0.0f, 0.0f,
+            200.0f, 100.0f, 1.0f, 0.0f,
+            200.0f, 200.0f, 1.0f, 1.0f,
+            100.0f, 200.0f, 0.0f, 1.0f
         };
 
         GLuint indices[] = {
@@ -79,12 +79,15 @@ int main()
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
-        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+        glm::mat4 proj = glm::ortho(00.f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+        glm::mat4 view = glm::translate(glm::mat4{ 1.0f }, glm::vec3{ -100, 0, 0 });
+        glm::mat4 model = glm::translate(glm::mat4{ 1.0f }, glm::vec3{ 200, 200, 0 });
+        glm::mat4 mvp = proj * view * model;
 
         Texture texture{ "opengl-logo.png" };
         texture.Bind();
         shader.SetUniform1i("u_Texture", 0);
-        shader.SetUniformMat4f("u_MVP", proj);
+        shader.SetUniformMat4f("u_MVP", mvp);
 
         vao.Unbind();
         vbo.Unbind();
