@@ -53,10 +53,10 @@ int main()
 
     {
         GLfloat vertices[] = {
-            100.0f, 100.0f, 0.0f, 0.0f,
-            200.0f, 100.0f, 1.0f, 0.0f,
-            200.0f, 200.0f, 1.0f, 1.0f,
-            100.0f, 200.0f, 0.0f, 1.0f
+            -50.0f, -50.0f, 0.0f, 0.0f,
+             50.0f, -50.0f, 1.0f, 0.0f,
+             50.0f,  50.0f, 1.0f, 1.0f,
+            -50.0f,  50.0f, 0.0f, 1.0f
         };
 
         GLuint indices[] = {
@@ -83,7 +83,7 @@ int main()
         shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
         glm::mat4 proj = glm::ortho(00.f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
-        glm::mat4 view = glm::translate(glm::mat4{ 1.0f }, glm::vec3{ -100, 0, 0 });
+        glm::mat4 view = glm::translate(glm::mat4{ 1.0f }, glm::vec3{ 0, 0, 0 });
 
         Texture texture{ "opengl-logo.png" };
         texture.Bind();
@@ -102,28 +102,38 @@ int main()
 
         ImGui::StyleColorsDark();
 
-        glm::vec3 translation{ 200, 200, 0 };
+        glm::vec3 translationA{ 200, 200, 0 };
+        glm::vec3 translationB{ 400, 200, 0 };
 
         GLfloat r = 0.0f;
         GLfloat inc = 0.05f;
         while (!glfwWindowShouldClose(window))
         {
-            glfwPollEvents();
+            renderer.Clear();
 
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            renderer.Clear();
+            {
+                glm::mat4 model = glm::translate(glm::mat4{ 1.0f }, translationA);
+                glm::mat4 mvp = proj * view * model;
 
-            glm::mat4 model = glm::translate(glm::mat4{ 1.0f }, translation);
-            glm::mat4 mvp = proj * view * model;
+                shader.Bind();
+                shader.SetUniformMat4f("u_MVP", mvp);
 
-            shader.Bind();
-            shader.SetUniformMat4f("u_MVP", mvp);
-            shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+                renderer.Draw(vao, ibo, shader);
+            }
+            
+            {
+                glm::mat4 model = glm::translate(glm::mat4{ 1.0f }, translationB);
+                glm::mat4 mvp = proj * view * model;
 
-            renderer.Draw(vao, ibo, shader);
+                shader.Bind();
+                shader.SetUniformMat4f("u_MVP", mvp);
+
+                renderer.Draw(vao, ibo, shader);
+            }
 
             if (r > 1.0f)
                 inc = -0.05f;
@@ -133,7 +143,8 @@ int main()
             r += inc;
 
             {
-                ImGui::SliderFloat3("Translation", &translation.x, 0.0f, 960.0f);
+                ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, 960.0f);
+                ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, 960.0f);
                 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             }
 
@@ -141,6 +152,8 @@ int main()
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwSwapBuffers(window);
+
+            glfwPollEvents();
         }
     }
 
