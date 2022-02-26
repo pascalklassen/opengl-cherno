@@ -24,6 +24,7 @@ public:
     void Bind() const;
     void Unbind() const;
 
+    void SetUniform1i(const std::string& name, GLint value);
     void SetUniform1f(const std::string& name, GLfloat value);
     void SetUniform4f(const std::string& name, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
 private:
