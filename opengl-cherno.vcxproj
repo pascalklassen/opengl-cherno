@@ -149,6 +149,7 @@
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="TestClearColor.cpp" />
+    <ClCompile Include="TestTexture2D.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="TestClearColor.h" />
+    <ClInclude Include="TestTexture2D.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />

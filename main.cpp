@@ -13,6 +13,7 @@
 
 #include "Renderer.h"
 #include "TestClearColor.h"
+#include "TestTexture2D.h"
 
 int main()
 {
@@ -59,6 +60,7 @@ int main()
         current = menu;
 
         menu->RegisterTest<test::TestClearColor>("Clear Color");
+        menu->RegisterTest<test::TestTexture2D>("2D Texture");
 
         while (!glfwWindowShouldClose(window))
         {
@@ -74,6 +76,7 @@ int main()
                 current->OnUpdate(0.0f);
                 current->OnRender();
                 ImGui::Begin("Test");
+                ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
                 if (current != menu && ImGui::Button("<-"))
                 {
